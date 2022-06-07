@@ -26,6 +26,6 @@ model State {
 
 model SafeTech {
   techUsageGrade Int @unique
-  techUsageModifier Decimal
+  techUsageModifier Float
   rejected Boolean
 }
