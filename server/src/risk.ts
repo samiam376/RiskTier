@@ -18,6 +18,8 @@ export const CoRailroad: Hueristic = (
   return state.stateAbr === "CO" && iso.description === "Railroad";
 };
 
+export const hueristics: Hueristic[] = [NyCrane, CoRailroad];
+
 export const riskTier = (
   iso: ISO,
   state: State,
