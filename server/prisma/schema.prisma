@@ -1,0 +1,31 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model ISO {
+  code String @unique
+  description String 
+  minYoe Int 
+  tier Int 
+  rejected Boolean 
+}
+
+model State {
+  stateAbr String @unique
+  name String @unique
+  riskTier Int
+}
+
+model SafeTech {
+  techUsageGrade Int @unique
+  techUsageModifier Decimal
+  rejected Boolean
+}
