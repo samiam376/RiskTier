@@ -7,7 +7,7 @@ generator client {
 
 datasource db {
   provider = "sqlite"
-  url      = env("DATABASE_URL")
+  url      = "file:./risk.db"
 }
 
 model ISO {
@@ -26,6 +26,6 @@ model State {
 
 model SafeTech {
   techUsageGrade Int @unique
-  techUsageModifier Decimal
+  techUsageModifier Float
   rejected Boolean
 }
