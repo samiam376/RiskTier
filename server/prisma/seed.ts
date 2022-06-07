@@ -14,7 +14,6 @@ async function main() {
     const IsoDataSet = await readRiskCSV<ISO>('ISO.csv', isoMapper);
     const SafeTechDataSet = await readRiskCSV<SafeTech>('SafeTech.csv', safeTechMapper);
     const StateDataSet = await readRiskCSV<State>('State.csv', stateMapper);
-    console.log(IsoDataSet);
     IsoDataSet.forEach(
         async element => {
             await prisma.iSO.create({
