@@ -10,7 +10,7 @@ Has the reference model csv for testing
 Contains an express server with a prisma database to serve the risk models.
 The model data was loaded into a sqlite database for easy extensibility. 
 The ```risk.ts``` file contains the risk model as well as the hueristic definitions.
-The  ```controller.ts``` file containes the api route implementations.
+The  ```controller.ts``` file contains the api route implementations.
 The ```server.ts``` file contains the express server. 
 
 To launch the backend server run ```yarn start```, it will default to port 3001
