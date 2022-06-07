@@ -1,5 +1,5 @@
 import express from "express";
-require('dotenv').config({ path: __dirname+'/.env' });
+require("dotenv").config({ path: __dirname + "/.env" });
 
 const PORT = process.env.PORT || 3000;
 const app = express();
