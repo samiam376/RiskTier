@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from "express";
+import { RiskOutput } from "./interfaces";
 import { hueristics, riskTier } from "./risk";
 import { prisma } from "./server";
 
@@ -10,13 +11,8 @@ export const postRiskModel = async (
 ): Promise<void> => {
   // parse inputs from request body
   // TODO: Add Validator
-  console.log("here");
-  console.log(req.params);
-  const { iso, state, tug } = req.query;
-
-  console.log(iso);
-  console.log(state);
-  console.log(tug);
+  const { iso, state, tug, yoe } = req.query;
+  console.log(yoe);
 
   //find iso data
   const isoInput = await prisma.iSO.findUnique({
@@ -39,13 +35,25 @@ export const postRiskModel = async (
     },
   });
 
-  //TODO: more complex error handling
+  //TODO: more complex error handling, create standard errors, and abstract out logic
   if (isoInput === null || stateInput === null || safeTechInput === null) {
-    res.status(400).json({
-      error: "data not found - better validation coming soon",
-    });
+    const output: RiskOutput = {
+      model: null,
+      error: "DATA_NOT_FOUND",
+    };
+    res.json(output);
+  } else if (Number(yoe) < isoInput.minYoe) {
+    const output: RiskOutput = {
+      model: null,
+      error: "INVALID_YOE",
+    };
+    res.json(output);
   } else {
-    const output = riskTier(isoInput, stateInput, safeTechInput, hueristics);
+    const risk = riskTier(isoInput, stateInput, safeTechInput, hueristics);
+    const output: RiskOutput = {
+      model: risk,
+      error: null,
+    };
     res.json(output);
   }
 };
