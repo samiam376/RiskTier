@@ -1,24 +1,9 @@
-import { Center, Container, Flex, Spacer, Square } from "@chakra-ui/layout";
+import { Container, Flex, Spacer, Square } from "@chakra-ui/layout";
 import type { NextPage } from "next";
-import {
-  Table,
-  Thead,
-  Tbody,
-  Tfoot,
-  Tr,
-  Th,
-  Td,
-  TableCaption,
-  TableContainer,
-  Stack,
-  Select,
-  Box,
-  FormLabel,
-  Divider,
-  Button,
-} from "@chakra-ui/react";
-import { RiskTable, RiskTableProps } from "../components/riskTable";
+
+import { RiskInput } from "../components/RiskInput";
 import React from "react";
+import { RiskTable, RiskTableProps } from "../components/RiskTable";
 
 const fakeData: RiskTableProps = {
   rejection: "TRUE",
@@ -29,23 +14,19 @@ const fakeData: RiskTableProps = {
   referred: "TRUE",
 };
 
+const fakeOptions = {
+  isoCodes: ["ISO_11", "ISO_12", "ISO_13"],
+  states: ["CA", "NY", "CO"],
+  techUsageGrades: [1, 2, 3, 4],
+};
+
 const Home: NextPage = () => {
   return (
     <Container>
       <Flex alignItems="center">
-        <Stack spacing={2}>
-          <FormLabel htmlFor="state">State</FormLabel>
-          <Select size="md" borderColor="black" />
-          <FormLabel htmlFor="isocode">ISO code</FormLabel>
-          <Select size="md" borderColor="black" />
-          <FormLabel htmlFor="tus">Technical Usage Grade</FormLabel>
-          <Select size="md" borderColor="black" />
-          <Button colorScheme="red">Calculate</Button>
-        </Stack>
+        <RiskInput {...fakeOptions}></RiskInput>
         <Spacer />
-        <Divider orientation="vertical" />
         <RiskTable {...fakeData}></RiskTable>
-        <Divider orientation="vertical" />
       </Flex>
     </Container>
   );
