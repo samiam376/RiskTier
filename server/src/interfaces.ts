@@ -36,3 +36,8 @@ export interface ModelOutput {
   TechUsageModifier: number | null;
   Referred: boolean | null;
 }
+
+export interface RiskOutput {
+  model: ModelOutput | null;
+  error: string | null;
+}

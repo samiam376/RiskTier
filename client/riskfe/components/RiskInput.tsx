@@ -4,6 +4,8 @@ import {
   FormLabel,
   Button,
   FormControl,
+  Input,
+  Alert,
 } from "@chakra-ui/react";
 import { Flex, Spacer } from "@chakra-ui/layout";
 import { InputHTMLAttributes, useState } from "react";
@@ -38,6 +40,8 @@ export const RiskInput: React.FC<RiskInputProps> = ({
   const [state, setState] = useState(states[0]);
   const [iso, setIso] = useState(isoCodes[0]);
   const [tug, setTug] = useState(String(techUsageGrades[0]));
+  const [yoe, setYoe] = useState("");
+
   const [risk, setRisk] = useState({
     rejection: "",
     riskTier: "",
@@ -47,12 +51,10 @@ export const RiskInput: React.FC<RiskInputProps> = ({
     referred: "",
   });
 
+  const [displayAlert, setDisplayAlert] = useState("none");
   const handleSubmit = async (event: any) => {
     event.preventDefault();
-    console.log(iso);
-    console.log(state);
-    console.log(tug);
-
+    setDisplayAlert("none");
     var myHeaders = new Headers();
     myHeaders.append("Cookie", "auth=shepherd");
 
@@ -61,20 +63,32 @@ export const RiskInput: React.FC<RiskInputProps> = ({
       headers: myHeaders,
     };
 
-    const url = `/api/risk?iso=${iso}&state=${state}&tug=${tug}`;
-    console.log(url);
+    const url = `/api/risk?iso=${iso}&state=${state}&tug=${tug}&yoe=${yoe}`;
 
     try {
       const response = await fetch(url, requestOptions);
       const resp = await response.json();
-      setRisk({
-        rejection: resp.Rejection ? "TRUE" : "FALSE",
-        riskTier: resp.RiskTier,
-        iSORiskTier: resp.ISORiskTier,
-        stateRiskTier: resp.StateRiskTier,
-        techUsageModifier: resp.TechUsageModifier,
-        referred: resp.Referred ? "TRUE" : "FALSE",
-      });
+      if (resp.error === "INVALID_YOE") {
+        setDisplayAlert("");
+        setRisk({
+          rejection: "",
+          riskTier: "",
+          iSORiskTier: "",
+          stateRiskTier: "",
+          techUsageModifier: "",
+          referred: "",
+        });
+      } else {
+        const model = resp.model;
+        setRisk({
+          rejection: model.Rejection ? "TRUE" : "FALSE",
+          riskTier: model.RiskTier,
+          iSORiskTier: model.ISORiskTier,
+          stateRiskTier: model.StateRiskTier,
+          techUsageModifier: model.TechUsageModifier,
+          referred: model.Referred ? "TRUE" : "FALSE",
+        });
+      }
     } catch (err) {
       console.log(err);
       setRisk({
@@ -89,54 +103,68 @@ export const RiskInput: React.FC<RiskInputProps> = ({
   };
 
   return (
-    <Flex alignItems="center">
-      <form onSubmit={handleSubmit}>
-        <Stack spacing={2}>
-          <FormControl isRequired>
-            <FormLabel htmlFor="state">State</FormLabel>
-            <Select
-              size="md"
-              borderColor="black"
-              onChange={(e) => setState(e.target.value)}
-            >
-              {stateOptions}
-            </Select>
-          </FormControl>
-          <FormControl isRequired>
-            <FormLabel htmlFor="isocode">ISO code</FormLabel>
-            <Select
-              size="md"
-              borderColor="black"
-              onChange={(e) => setIso(e.target.value)}
-            >
-              {isoOptions}
-            </Select>
-          </FormControl>
-          <FormControl isRequired>
-            <FormLabel htmlFor="tus">Technical Usage Grade</FormLabel>
-            <Select
-              size="md"
-              borderColor="black"
-              onChange={(e) => setTug(e.target.value)}
-            >
-              {tusOptions}
-            </Select>
-          </FormControl>
-          <Button colorScheme="red" type="submit">
-            model
-          </Button>
-        </Stack>
-      </form>
-      <Spacer>
-        <RiskTable
-          rejection={risk.rejection}
-          riskTier={risk.riskTier}
-          iSORiskTier={risk.iSORiskTier}
-          stateRiskTier={risk.stateRiskTier}
-          techUsageModifier={risk.techUsageModifier}
-          referred={risk.referred}
-        />
-      </Spacer>
-    </Flex>
+    <>
+      <Flex alignItems="center">
+        <form onSubmit={handleSubmit}>
+          <Stack spacing={2}>
+            <FormControl isRequired>
+              <FormLabel htmlFor="state">State</FormLabel>
+              <Select
+                size="sm"
+                borderColor="black"
+                onChange={(e) => setState(e.target.value)}
+              >
+                {stateOptions}
+              </Select>
+            </FormControl>
+            <FormControl isRequired>
+              <FormLabel htmlFor="isocode">ISO code</FormLabel>
+              <Select
+                size="sm"
+                borderColor="black"
+                onChange={(e) => setIso(e.target.value)}
+              >
+                {isoOptions}
+              </Select>
+            </FormControl>
+            <FormControl isRequired>
+              <FormLabel htmlFor="tus">Technical Usage Grade</FormLabel>
+              <Select
+                size="sm"
+                borderColor="black"
+                onChange={(e) => setTug(e.target.value)}
+              >
+                {tusOptions}
+              </Select>
+            </FormControl>
+            <FormControl isRequired>
+              <FormLabel htmlFor="yoe">Years of Experience</FormLabel>
+              <Input
+                id="yoe"
+                size="sm"
+                borderColor="black"
+                onChange={(e) => setYoe(e.target.value)}
+              />
+            </FormControl>
+            <Button colorScheme="red" type="submit">
+              model
+            </Button>
+          </Stack>
+        </form>
+        <Spacer>
+          <RiskTable
+            rejection={risk.rejection}
+            riskTier={risk.riskTier}
+            iSORiskTier={risk.iSORiskTier}
+            stateRiskTier={risk.stateRiskTier}
+            techUsageModifier={risk.techUsageModifier}
+            referred={risk.referred}
+          />
+        </Spacer>
+      </Flex>
+      <Alert status="error" display={displayAlert}>
+        Invalid Years of Experience
+      </Alert>
+    </>
   );
 };

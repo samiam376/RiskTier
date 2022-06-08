@@ -24,8 +24,9 @@ export default async function handler(
   const iso = req.query["iso"];
   const state = req.query["state"];
   const tug = req.query["tug"];
+  const yoe = req.query["yoe"];
 
-  const url = `http://localhost:3001/api/risk?iso=${iso}&state=${state}&tug=${tug}`;
+  const url = `http://localhost:3001/api/risk?iso=${iso}&state=${state}&tug=${tug}&yoe=${yoe}`;
   console.log(url);
   const response = await fetch(url, requestOptions);
   requestOptions;
