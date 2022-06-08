@@ -10,6 +10,10 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<IsoData>
 ) {
+  //reroutes fetch request to risk service
+  //fetch all possible iso codes
+
+  //set shepherd auth cookie for access
   var myHeaders = new Headers();
   myHeaders.append("Cookie", "auth=shepherd");
 
@@ -24,6 +28,7 @@ export default async function handler(
   requestOptions;
   const resp = await response.json();
   console.log(resp);
+
   //TODO: better error handling
   res.status(200).json(resp);
 }

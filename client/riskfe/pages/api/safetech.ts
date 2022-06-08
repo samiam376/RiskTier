@@ -10,6 +10,9 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Tugs>
 ) {
+  //routes api call to risk service
+  //retries all techical usage grades
+
   var myHeaders = new Headers();
   myHeaders.append("Cookie", "auth=shepherd");
 
