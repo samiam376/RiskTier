@@ -2,15 +2,17 @@ import { PrismaClient } from ".prisma/client";
 import cookieParser from "cookie-parser";
 import express from "express";
 import { getISO, getStates, getTUGS, postRiskModel } from "./controllers";
+import cors from "cors";
 
 require("dotenv").config({ path: __dirname + "/.env" });
 
-const PORT = process.env.PORT || 3001;
+const PORT = 3001;
 
 export const prisma = new PrismaClient();
 export const app = express();
 
 app.set("port", PORT);
+app.use(cors({ origin: "http://localhost:3000" }));
 app.use(cookieParser());
 app.use(express.json());
 app.use((req, res, next) => {
@@ -25,10 +27,10 @@ app.use((req, res, next) => {
   next();
 });
 
-app.post(`/risk`, postRiskModel);
-app.get(`/iso`, getISO);
-app.get(`/states`, getStates);
-app.get(`/tugs`, getTUGS);
+app.post(`/api/risk`, postRiskModel);
+app.get(`/api/iso`, getISO);
+app.get(`/api/states`, getStates);
+app.get(`/api/tugs`, getTUGS);
 
 /**
  * Start Express server.

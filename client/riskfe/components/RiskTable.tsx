@@ -1,10 +1,7 @@
 import {
   Table,
-  Thead,
-  Tbody,
-  Tfoot,
   Tr,
-  Th,
+  Tbody,
   Td,
   TableCaption,
   TableContainer,
@@ -33,28 +30,48 @@ export const RiskTable: React.FC<RiskTableProps> = ({
         <TableCaption placement="top">Risk Output</TableCaption>
         <Tbody>
           <Tr>
-            <Td fontWeight="extrabold">Risk Tier</Td>
-            <Td isNumeric>{riskTier}</Td>
+            <Td fontWeight="extrabold" key="rt">
+              Risk Tier
+            </Td>
+            <Td isNumeric key="rtvalue">
+              {riskTier}
+            </Td>
           </Tr>
           <Tr>
-            <Td fontWeight="extrabold">ISO Risk Tier</Td>
-            <Td isNumeric>{iSORiskTier}</Td>
+            <Td fontWeight="extrabold" key="iso">
+              ISO Risk Tier
+            </Td>
+            <Td isNumeric key="isovalue">
+              {iSORiskTier}
+            </Td>
           </Tr>
           <Tr>
-            <Td fontWeight="extrabold">State Risk Tier</Td>
-            <Td isNumeric>{stateRiskTier}</Td>
+            <Td fontWeight="extrabold" key="state">
+              State Risk Tier
+            </Td>
+            <Td isNumeric key="statevalue">
+              {stateRiskTier}
+            </Td>
           </Tr>
           <Tr>
-            <Td fontWeight="extrabold">Tech Usage Modifier</Td>
-            <Td isNumeric>{techUsageModifier}</Td>
+            <Td fontWeight="extrabold" key="tsu">
+              Tech Usage Modifier
+            </Td>
+            <Td isNumeric key="tsuvalue">
+              {techUsageModifier}
+            </Td>
           </Tr>
           <Tr>
-            <Td fontWeight="extrabold">Rejected</Td>
-            <Td>{rejection}</Td>
+            <Td fontWeight="extrabold" key="refjected">
+              Rejected
+            </Td>
+            <Td key="rejectvalue">{rejection}</Td>
           </Tr>
           <Tr>
-            <Td fontWeight="extrabold">Referred</Td>
-            <Td>{referred}</Td>
+            <Td fontWeight="extrabold" key="referred">
+              Referred
+            </Td>
+            <Td key="refervalue">{referred}</Td>
           </Tr>
         </Tbody>
       </Table>

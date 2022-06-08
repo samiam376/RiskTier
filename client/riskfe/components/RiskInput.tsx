@@ -38,12 +38,12 @@ export const RiskInput: React.FC<RiskInputProps> = ({
   const [state, setState] = useState(stateOptions[0]);
   const [iso, setIso] = useState(isoOptions[0]);
   const [tug, setTug] = useState(tusOptions[0]);
-  const [risk, setRisk] =useState({
+  const [risk, setRisk] = useState({
     rejection: "",
-    riskTier: null,
-    iSORiskTier: null,
-    stateRiskTier: null,
-    techUsageModifier: null,
+    riskTier: "",
+    iSORiskTier: "",
+    stateRiskTier: "",
+    techUsageModifier: "",
     referred: "",
   });
 
@@ -57,17 +57,35 @@ export const RiskInput: React.FC<RiskInputProps> = ({
     myHeaders.append("Cookie", "auth=shepherd");
 
     var requestOptions = {
-    method: 'POST',
-    headers: myHeaders
+      method: "POST",
+      headers: myHeaders,
     };
 
-    const url =  `localhost:3001/risk?iso=${iso}}&state=${state}&tug=${tug}`
-    const response = await fetch(
-        url,
-        requestOptions
-    ).then(response => response.json())
-    .then(result => console.log(result))
-    .catch(error => console.log('error', error));
+    const url = `/api/risk?iso=${iso}&state=${state}&tug=${tug}`;
+    console.log(url);
+
+    try {
+      const response = await fetch(url, requestOptions);
+      const resp = await response.json();
+      setRisk({
+        rejection: resp.Rejection,
+        riskTier: resp.RiskTier,
+        iSORiskTier: resp.ISORiskTier,
+        stateRiskTier: resp.StateRiskTier,
+        techUsageModifier: resp.TechUsageModifier,
+        referred: resp.Referred,
+      });
+    } catch (err) {
+      console.log(err);
+      setRisk({
+        rejection: "",
+        riskTier: "",
+        iSORiskTier: "",
+        stateRiskTier: "",
+        techUsageModifier: "",
+        referred: "",
+      });
+    }
   };
 
   return (
@@ -110,13 +128,13 @@ export const RiskInput: React.FC<RiskInputProps> = ({
         </Stack>
       </form>
       <Spacer>
-        <RiskTable 
-        rejection={risk.rejection} 
-        riskTier={risk.riskTier} 
-        iSORiskTier={risk.iSORiskTier}
-        stateRiskTier={risk.stateRiskTier}
-        techUsageModifier={risk.techUsageModifier}
-        referred={risk.referred}
+        <RiskTable
+          rejection={risk.rejection}
+          riskTier={risk.riskTier}
+          iSORiskTier={risk.iSORiskTier}
+          stateRiskTier={risk.stateRiskTier}
+          techUsageModifier={risk.techUsageModifier}
+          referred={risk.referred}
         />
       </Spacer>
     </Flex>

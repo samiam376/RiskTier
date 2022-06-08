@@ -17,13 +17,13 @@ const fakeData: RiskTableProps = {
 const fakeOptions = {
   isoCodes: ["ISO_11", "ISO_12", "ISO_13"],
   states: ["CA", "NY", "CO"],
-  techUsageGrades: [1, 2, 3, 4],
+  techUsageGrades: [12, 2, 3, 4],
 };
 
 const Home: NextPage = () => {
   return (
     <Container>
-      <RiskInput {...fakeOptions}/>
+      <RiskInput {...fakeOptions} />
     </Container>
   );
 };
