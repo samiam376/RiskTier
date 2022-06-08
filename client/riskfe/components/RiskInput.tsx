@@ -10,6 +10,7 @@ import {
 import { Flex, Spacer } from "@chakra-ui/layout";
 import { InputHTMLAttributes, useState } from "react";
 import { RiskTable } from "../components/RiskTable";
+import { AlertType, RiskAlert } from "./Alert";
 
 type RiskInputProps = InputHTMLAttributes<HTMLInputElement> & {
   isoCodes: string[];
@@ -58,14 +59,12 @@ export const RiskInput: React.FC<RiskInputProps> = ({
   const [risk, setRisk] = useState(nullRisk);
 
   //define state to toggle alert display
-  const [displayAlert, setDisplayAlert] = useState("none");
+  const [displayAlert, setDisplayAlert] = useState("");
 
   //on submit call risk api and update gird w/ values
   //else display alert
   const handleSubmit = async (event: any) => {
     event.preventDefault();
-    setDisplayAlert("none");
-
     //add out custom 'auth' cookie
     var myHeaders = new Headers();
     myHeaders.append("Cookie", "auth=shepherd");
@@ -86,7 +85,7 @@ export const RiskInput: React.FC<RiskInputProps> = ({
       //check for error
       if (resp.error === "INVALID_YOE") {
         //display alert and nullify table
-        setDisplayAlert("");
+        setDisplayAlert(AlertType.ERROR);
         setRisk(nullRisk);
       } else {
         //display risk model
@@ -99,6 +98,13 @@ export const RiskInput: React.FC<RiskInputProps> = ({
           techUsageModifier: model.TechUsageModifier,
           referred: model.Referred ? "TRUE" : "FALSE",
         });
+        if (model.Referred) {
+          setDisplayAlert(AlertType.REFERRED);
+        } else if (model.Rejected) {
+          setDisplayAlert(AlertType.REJECTED);
+        } else {
+          setDisplayAlert(AlertType.SUCCESS);
+        }
       }
     } catch (err) {
       //nullify table on api error
@@ -167,9 +173,7 @@ export const RiskInput: React.FC<RiskInputProps> = ({
           />
         </Spacer>
       </Flex>
-      <Alert status="error" display={displayAlert}>
-        Invalid Years of Experience
-      </Alert>
+      <RiskAlert alertType={displayAlert}></RiskAlert>
     </>
   );
 };
