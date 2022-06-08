@@ -9,10 +9,10 @@ import {
 
 export interface RiskTableProps {
   rejection: string;
-  riskTier: number | null;
-  iSORiskTier: number | null;
-  stateRiskTier: number | null;
-  techUsageModifier: number | null;
+  riskTier: string | null;
+  iSORiskTier: string | null;
+  stateRiskTier: string | null;
+  techUsageModifier: string | null;
   referred: string | null;
 }
 

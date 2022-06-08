@@ -7,7 +7,7 @@ import {
 } from "@chakra-ui/react";
 import { Flex, Spacer } from "@chakra-ui/layout";
 import { InputHTMLAttributes, useState } from "react";
-import { RiskTable, RiskTableProps } from "../components/RiskTable";
+import { RiskTable } from "../components/RiskTable";
 
 type RiskInputProps = InputHTMLAttributes<HTMLInputElement> & {
   isoCodes: string[];
@@ -35,9 +35,10 @@ export const RiskInput: React.FC<RiskInputProps> = ({
     tusOptions.push(<option>{tus}</option>);
   });
 
-  const [state, setState] = useState(stateOptions[0]);
-  const [iso, setIso] = useState(isoOptions[0]);
-  const [tug, setTug] = useState(tusOptions[0]);
+
+  const [state, setState] = useState(states[0]);
+  const [iso, setIso] = useState(isoCodes[0]);
+  const [tug, setTug] = useState(String(techUsageGrades[0]));
   const [risk, setRisk] = useState({
     rejection: "",
     riskTier: "",
