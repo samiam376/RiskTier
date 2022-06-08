@@ -22,7 +22,7 @@ export const RiskInput: React.FC<RiskInputProps> = ({
   states,
   techUsageGrades,
 }) => {
-  //build drop down input dadta sets
+  //build drop down input data sets
   let stateOptions: any[] = [];
   states.forEach((state) => {
     stateOptions.push(<option>{state}</option>);
