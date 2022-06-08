@@ -1,13 +1,17 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import Cors from "cors";
 
-type Data = {
-  name: string;
+type RiskData = {
+  Rejection: boolean;
+  RiskTier: number;
+  ISORiskTier: number;
+  StateRiskTier: number;
+  TechUsageModifier: number;
+  Referred: false;
 };
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<Data>
+  res: NextApiResponse<RiskData>
 ) {
   var myHeaders = new Headers();
   myHeaders.append("Cookie", "auth=shepherd");
@@ -27,5 +31,6 @@ export default async function handler(
   requestOptions;
   const resp = await response.json();
   console.log(resp);
+  //TODO: better error handling
   res.status(200).json(resp);
 }

@@ -35,7 +35,6 @@ export const RiskInput: React.FC<RiskInputProps> = ({
     tusOptions.push(<option>{tus}</option>);
   });
 
-
   const [state, setState] = useState(states[0]);
   const [iso, setIso] = useState(isoCodes[0]);
   const [tug, setTug] = useState(String(techUsageGrades[0]));
@@ -69,12 +68,12 @@ export const RiskInput: React.FC<RiskInputProps> = ({
       const response = await fetch(url, requestOptions);
       const resp = await response.json();
       setRisk({
-        rejection: resp.Rejection,
+        rejection: resp.Rejection ? "TRUE" : "FALSE",
         riskTier: resp.RiskTier,
         iSORiskTier: resp.ISORiskTier,
         stateRiskTier: resp.StateRiskTier,
         techUsageModifier: resp.TechUsageModifier,
-        referred: resp.Referred,
+        referred: resp.Referred ? "TRUE" : "FALSE",
       });
     } catch (err) {
       console.log(err);
