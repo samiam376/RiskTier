@@ -23,11 +23,9 @@ const fakeOptions = {
 const Home: NextPage = () => {
   return (
     <Container>
-      <Flex alignItems="center">
-        <RiskInput {...fakeOptions}></RiskInput>
-        <Spacer />
+      <RiskInput {...fakeOptions}>
         <RiskTable {...fakeData}></RiskTable>
-      </Flex>
+      </RiskInput>
     </Container>
   );
 };
