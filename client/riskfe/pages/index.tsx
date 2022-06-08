@@ -1,4 +1,4 @@
-import { Square } from '@chakra-ui/layout'
+import { Center, Container, Flex, Spacer, Square } from '@chakra-ui/layout'
 import type { NextPage } from 'next'
 import {
   Table,
@@ -10,39 +10,44 @@ import {
   Td,
   TableCaption,
   TableContainer,
+  Stack,
+  Select,
+  Box,
+  FormLabel,
+  Divider,
+  Button,
 } from '@chakra-ui/react'
+import { RiskTable, RiskTableProps } from '../components/riskTable'
+import React from 'react'
+
+const fakeData: RiskTableProps = {
+  rejection: 'TRUE',
+  riskTier: 10,
+  iSORiskTier: 7,
+  stateRiskTier: 5,
+  techUsageModifier: 0.75,
+  referred: 'TRUE'
+}
 
 const Home: NextPage = () => {
   return (
-    <Square>
-      <TableContainer>
-  <Table variant='simple'>
-    <TableCaption placement='top'>Risk Output</TableCaption>
-    <Tbody>
-      <Tr>
-        <Td fontWeight='extrabold'>Risk Tier</Td>
-        <Td isNumeric>25.4</Td>
-      </Tr>
-      <Tr>
-        <Td fontWeight='extrabold'>ISO Risk Tier</Td>
-        <Td isNumeric>30.48</Td>
-      </Tr>
-      <Tr>
-        <Td fontWeight='extrabold'>State Risk Tier</Td>
-        <Td isNumeric>0.91444</Td>
-      </Tr>
-      <Tr>
-        <Td fontWeight='extrabold'>Tech Usage Modifier</Td>
-        <Td isNumeric>0.91444</Td>
-      </Tr>
-      <Tr>
-        <Td fontWeight='extrabold'>Rejected</Td>
-        <Td >TRUE</Td>
-      </Tr>
-    </Tbody>
-  </Table>
-</TableContainer>
-    </Square>
+    <Container>
+      <Flex alignItems='center'>
+      <Stack spacing={2}>
+        <FormLabel htmlFor='state'>State</FormLabel>
+        <Select size='md' borderColor='black' />
+        <FormLabel htmlFor='isocode'>ISO code</FormLabel>
+        <Select size='md' borderColor='black'/>
+        <FormLabel htmlFor='tus'>Technical Usage Grade</FormLabel>
+        <Select size='md' borderColor='black'/>
+        <Button colorScheme='red'>Calculate</Button>
+    </Stack> 
+    <Spacer/>
+    <Divider orientation='vertical'/>
+      <RiskTable {...fakeData}></RiskTable>
+      <Divider orientation='vertical'/> 
+    </Flex>
+    </Container>
   )
 }
 
