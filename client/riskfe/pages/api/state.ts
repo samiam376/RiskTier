@@ -10,6 +10,10 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<StateData>
 ) {
+  //routes api call to risk service
+  //retrieves all possibles states
+
+  //auth cookie
   var myHeaders = new Headers();
   myHeaders.append("Cookie", "auth=shepherd");
 

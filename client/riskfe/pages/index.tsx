@@ -7,13 +7,8 @@ import { IsoData } from "./api/iso";
 import { StateData } from "./api/state";
 import { Tugs } from "./api/safetech";
 
-const fakeOptions = {
-  isoCodes: ["ISO_11", "ISO_12", "ISO_13"],
-  states: ["CA", "NY", "CO"],
-  techUsageGrades: [10, 25, 40],
-};
-
 const Home: NextPage = () => {
+  //set input states
   const [stateInput, setStateInput] = useState({
     states: [""],
   });
@@ -24,6 +19,7 @@ const Home: NextPage = () => {
     tugs: [0],
   });
 
+  //fetch input options from risk service on first render
   useEffect(() => {
     const fetchData = async () => {
       const [isoData, stateData, tugData] = await Promise.all([
@@ -36,6 +32,7 @@ const Home: NextPage = () => {
       const states: StateData = await stateData.json();
       const tugs: Tugs = await tugData.json();
 
+      //build drop down options for select fields
       let isoList: string[] = [];
       iso.forEach((elem) => {
         isoList.push(elem.code);
@@ -50,7 +47,7 @@ const Home: NextPage = () => {
       tugs.forEach((elem) => {
         tugList.push(elem.techUsageGrade);
       });
-
+      //set dropdown options
       setIsoInput({ isos: isoList });
       setStateInput({ states: stateList });
       setTugInput({ tugs: tugList });

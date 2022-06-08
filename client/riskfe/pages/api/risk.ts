@@ -13,6 +13,9 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<RiskData>
 ) {
+  //route risk api calls to risk service
+
+  //auth coookie
   var myHeaders = new Headers();
   myHeaders.append("Cookie", "auth=shepherd");
 

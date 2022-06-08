@@ -22,6 +22,7 @@ export const RiskInput: React.FC<RiskInputProps> = ({
   states,
   techUsageGrades,
 }) => {
+  //build drop down input data sets
   let stateOptions: any[] = [];
   states.forEach((state) => {
     stateOptions.push(<option>{state}</option>);
@@ -37,24 +38,35 @@ export const RiskInput: React.FC<RiskInputProps> = ({
     tusOptions.push(<option>{tus}</option>);
   });
 
+  //define input states
   const [state, setState] = useState(states[0]);
   const [iso, setIso] = useState(isoCodes[0]);
   const [tug, setTug] = useState(String(techUsageGrades[0]));
   const [yoe, setYoe] = useState("");
 
-  const [risk, setRisk] = useState({
+  //base case risk grid
+  const nullRisk = {
     rejection: "",
     riskTier: "",
     iSORiskTier: "",
     stateRiskTier: "",
     techUsageModifier: "",
     referred: "",
-  });
+  };
 
+  //define output grid state
+  const [risk, setRisk] = useState(nullRisk);
+
+  //define state to toggle alert display
   const [displayAlert, setDisplayAlert] = useState("none");
+
+  //on submit call risk api and update gird w/ values
+  //else display alert
   const handleSubmit = async (event: any) => {
     event.preventDefault();
     setDisplayAlert("none");
+
+    //add out custom 'auth' cookie
     var myHeaders = new Headers();
     myHeaders.append("Cookie", "auth=shepherd");
 
@@ -63,22 +75,21 @@ export const RiskInput: React.FC<RiskInputProps> = ({
       headers: myHeaders,
     };
 
+    //build url query to fetch next local api
+    //next will route to our backend service in the definition of riskfe/pages/api/risk.ts
     const url = `/api/risk?iso=${iso}&state=${state}&tug=${tug}&yoe=${yoe}`;
 
     try {
       const response = await fetch(url, requestOptions);
       const resp = await response.json();
+
+      //check for error
       if (resp.error === "INVALID_YOE") {
+        //display alert and nullify table
         setDisplayAlert("");
-        setRisk({
-          rejection: "",
-          riskTier: "",
-          iSORiskTier: "",
-          stateRiskTier: "",
-          techUsageModifier: "",
-          referred: "",
-        });
+        setRisk(nullRisk);
       } else {
+        //display risk model
         const model = resp.model;
         setRisk({
           rejection: model.Rejection ? "TRUE" : "FALSE",
@@ -90,15 +101,9 @@ export const RiskInput: React.FC<RiskInputProps> = ({
         });
       }
     } catch (err) {
+      //nullify table on api error
       console.log(err);
-      setRisk({
-        rejection: "",
-        riskTier: "",
-        iSORiskTier: "",
-        stateRiskTier: "",
-        techUsageModifier: "",
-        referred: "",
-      });
+      setRisk(nullRisk);
     }
   };
 

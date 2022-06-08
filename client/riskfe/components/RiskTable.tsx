@@ -24,6 +24,7 @@ export const RiskTable: React.FC<RiskTableProps> = ({
   techUsageModifier,
   referred,
 }) => {
+  //build risk table
   return (
     <TableContainer>
       <Table variant="simple">
