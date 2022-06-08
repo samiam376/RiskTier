@@ -23,9 +23,7 @@ const fakeOptions = {
 const Home: NextPage = () => {
   return (
     <Container>
-      <RiskInput {...fakeOptions}>
-        <RiskTable {...fakeData}></RiskTable>
-      </RiskInput>
+      <RiskInput {...fakeOptions}/>
     </Container>
   );
 };

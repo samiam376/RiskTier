@@ -7,6 +7,7 @@ import {
 } from "@chakra-ui/react";
 import { Flex, Spacer } from "@chakra-ui/layout";
 import { InputHTMLAttributes, useState } from "react";
+import { RiskTable, RiskTableProps } from "../components/RiskTable";
 
 type RiskInputProps = InputHTMLAttributes<HTMLInputElement> & {
   isoCodes: string[];
@@ -18,7 +19,6 @@ export const RiskInput: React.FC<RiskInputProps> = ({
   isoCodes,
   states,
   techUsageGrades,
-  ...props
 }) => {
   let stateOptions: any[] = [];
   states.forEach((state) => {
@@ -35,15 +35,39 @@ export const RiskInput: React.FC<RiskInputProps> = ({
     tusOptions.push(<option>{tus}</option>);
   });
 
-  const [state, setState] = useState("");
-  const [iso, setIso] = useState("");
-  const [tug, setTug] = useState("");
+  const [state, setState] = useState(stateOptions[0]);
+  const [iso, setIso] = useState(isoOptions[0]);
+  const [tug, setTug] = useState(tusOptions[0]);
+  const [risk, setRisk] =useState({
+    rejection: "",
+    riskTier: null,
+    iSORiskTier: null,
+    stateRiskTier: null,
+    techUsageModifier: null,
+    referred: "",
+  });
 
-  const handleSubmit = (event: any) => {
+  const handleSubmit = async (event: any) => {
     event.preventDefault();
     console.log(iso);
     console.log(state);
     console.log(tug);
+
+    var myHeaders = new Headers();
+    myHeaders.append("Cookie", "auth=shepherd");
+
+    var requestOptions = {
+    method: 'POST',
+    headers: myHeaders
+    };
+
+    const url =  `localhost:3001/risk?iso=${iso}}&state=${state}&tug=${tug}`
+    const response = await fetch(
+        url,
+        requestOptions
+    ).then(response => response.json())
+    .then(result => console.log(result))
+    .catch(error => console.log('error', error));
   };
 
   return (
@@ -85,7 +109,16 @@ export const RiskInput: React.FC<RiskInputProps> = ({
           </Button>
         </Stack>
       </form>
-      <Spacer>{props.children}</Spacer>
+      <Spacer>
+        <RiskTable 
+        rejection={risk.rejection} 
+        riskTier={risk.riskTier} 
+        iSORiskTier={risk.iSORiskTier}
+        stateRiskTier={risk.stateRiskTier}
+        techUsageModifier={risk.techUsageModifier}
+        referred={risk.referred}
+        />
+      </Spacer>
     </Flex>
   );
 };
